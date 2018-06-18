@@ -1,4 +1,4 @@
-### Kubernetes Cluster Automation
+### Automation- Kubernetes Cluster Automation
 
 * Step 1:
 ```
@@ -22,7 +22,8 @@ ansible-playbook -i hosts workers.yml
 
 This will join the worker nodes to the master.
 
-
+#####################################################################################
+#####################################################################################
 
 ### Automation- Docker ENV setup and install Jenkins
 
@@ -40,6 +41,9 @@ ansible-playbook -i hosts playbook.yml
 1. This will Set the hostname, install docker in all Nodes
 2. Install Jenkins, provision Docker private registry and pull a docker image
 
+
+#####################################################################################
+#####################################################################################
 
 
 ### Automation- Configure MongoDB Replication
