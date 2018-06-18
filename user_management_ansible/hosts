@@ -1,0 +1,7 @@
+[servers]
+54.169.70.27
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_user=ubuntu
+ansible_private_key_file=<path_to_.pem_file>

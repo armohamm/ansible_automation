@@ -1,0 +1,14 @@
+---
+- hosts: all #modify your server list
+  remote_user: root
+  sudo: yes
+
+  tasks:
+  - include_vars: users.yml
+  - name: Creating users
+    user: name="{{ item.username}}"
+    with_items: "{{ users }}"
+
+  - name: Placing SSH Key to Authorized Key
+    authorized_key: user="{{item.username}}" key="{{ lookup('file', './keys/{{ item.username}}.pub')}}"
+    with_items: "{{ users }}"

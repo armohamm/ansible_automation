@@ -1,0 +1,15 @@
+---
+- name: Copy replicaset file to remote server
+  sudo: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - {src: 'roles/mongodb-master/templates/initiate.js',dest: '/tmp/initiate.js'}
+    #- {src: 'roles/mongodb-master/templates/set_priority.js',dest: '/tmp/set_priority.js'}
+
+- name: initiate replicaset and set priority
+  command: mongo < {{ item }}
+  with_items:
+    - /tmp/initiate.js
+    #- /tmp/set_priority.js

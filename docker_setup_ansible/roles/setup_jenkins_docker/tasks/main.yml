@@ -1,0 +1,17 @@
+---
+- name: Copy docker registry templates to create registry
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - {src: '../templates/docker.j2',dest: '/etc/default/docker'}
+    #- {src: '../templates/daemon.json.j2',dest: '/etc/docker/daemon.json'}
+
+- name: Adding existing user '{{ user }}' to group sudo
+  user: name='{{ user }}'
+        groups='{{ group }}'
+        append=yes
+
+  notify:
+    - restart jenkins
+    - restart docker

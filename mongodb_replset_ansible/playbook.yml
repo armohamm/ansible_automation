@@ -1,0 +1,16 @@
+---
+- name: deploy MongoDB and configure the database
+  hosts:
+    - all
+  user: ubuntu
+  sudo: yes
+  roles:
+    - mongodb
+
+- name: Configuring the replica sets
+  hosts:
+    - master
+  user: ubuntu
+  sudo: yes
+  roles:
+    - mongodb-master

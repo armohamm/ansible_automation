@@ -1,0 +1,26 @@
+---
+- name: Install packages and dependencies
+  apt: name={{ item }} update_cache=yes state=installed
+  with_items:
+    - default-jdk
+    - libfontconfig
+    - libffi-dev
+    - libncurses5-dev
+
+- name: Add the Jenkins public GPG key to the apt repo
+  apt_key: url=http://pkg.jenkins.io/debian/jenkins-ci.org.key
+           state=present
+
+- name: Add Jenkins to the trusted sources list
+  apt_repository: repo='deb http://pkg.jenkins.io/debian-stable binary/'
+                  update_cache=yes
+                  state=present
+- name:    Install Jenkins
+  apt:     name=jenkins
+  notify: restart jenkins
+
+- name: add jenkins to sudoers
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: 'jenkins ALL=(ALL) NOPASSWD: ALL'

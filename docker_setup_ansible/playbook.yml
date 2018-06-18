@@ -1,0 +1,19 @@
+---
+- name: deploy DOCKER and setup the environment
+  hosts:
+    - all_group
+  user: ubuntu
+  sudo: yes
+  roles:
+    - install_docker
+    - set_env
+
+- name: deploy Jenkins and Configure
+  hosts:
+    - jenkins
+  user: ubuntu
+  sudo: yes
+  roles:
+    - install_jenkins
+    - setup_jenkins_docker
+    - docker_image

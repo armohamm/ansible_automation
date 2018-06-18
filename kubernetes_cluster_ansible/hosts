@@ -1,0 +1,30 @@
+[masters]
+kube-master ansible_ssh_host=13.250.115.156
+
+[workers]
+kube-worker1 ansible_ssh_host=54.169.97.211
+kube-worker2 ansible_ssh_host=13.229.251.211
+
+[all_group]
+kube-master
+kube-worker1
+kube-worker2
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_user=ubuntu
+ansible_private_key_file=<path_to_.pem_file>
+
+
+
+############# LIST ############
+#### All Host ####
+# set hostname
+# install docker, kubeadm, kubectl, kubelet
+
+#### Master Node #####
+# kubeadm init
+# make kubectl work
+
+##### Worker Nodes #####
+# join nodes

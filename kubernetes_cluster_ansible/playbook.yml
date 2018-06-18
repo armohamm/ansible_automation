@@ -1,0 +1,22 @@
+---
+- name: deploy DOCKER and setup the environment
+  hosts:
+    - all_group
+  #gather_facts: False
+  user: ubuntu
+  sudo: yes
+
+  # roles:
+  #   - set_hostname
+  #   - install_docker
+  #   - setup_repo_docker
+  #   - install_kubernetes
+
+
+- name: Initiating kubernetes master server
+  hosts:
+    - masters
+  user: ubuntu
+  sudo: yes
+  roles:
+    - initiate_master

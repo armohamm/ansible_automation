@@ -1,0 +1,5 @@
+---
+# Handler for Docker notifications
+
+- name: restart kubelet
+  service: name=kubelet state=restarted

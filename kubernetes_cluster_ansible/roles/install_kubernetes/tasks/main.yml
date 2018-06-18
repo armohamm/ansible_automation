@@ -1,0 +1,25 @@
+---
+- name: Add the kubernetes public GPG key to the apt repo
+  apt_key: url=https://packages.cloud.google.com/apt/doc/apt-key.gpg
+           state=present
+
+- name: Add kubernetes to the trusted sources list
+  apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial main'
+                  update_cache=yes
+                  state=present
+
+- name: Install Kubeadm Kubectl Kubelet
+  apt: name={{ item }} update_cache=yes state=present
+  with_items:
+    - apt-transport-https
+    - curl
+    - kubeadm
+    - kubectl
+    - kubelet
+
+  notify: restart docker
+# - name: add jenkins to sudoers
+#   lineinfile:
+#     path: /etc/sudoers
+#     state: present
+#     line: 'jenkins ALL=(ALL) NOPASSWD: ALL'

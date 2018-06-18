@@ -1,0 +1,30 @@
+---
+- name:    Install prerequisites
+  apt:     name={{item}} update_cache=yes state=present
+  with_items:
+   # - apt-transport-https
+   # - ca-certificates
+   - python3-pip
+   - curl
+   - software-properties-common
+
+
+- name:    Add Docker GPG key
+  apt_key: url=https://download.docker.com/linux/ubuntu/gpg
+- name:    Add Docker APT repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+- name:    Install Docker
+  apt:     name=docker-ce=17.03.0~ce-0~ubuntu-xenial
+  notify: restart docker
+
+
+- name: install certain python modules for docker
+  pip:
+    name: "{{ item }}"
+    # version: "{{ item.version }}"
+    state: present
+  with_items:
+  #- { name: docker, version: 17.03}
+  - docker-py
+  #notify: restart docker

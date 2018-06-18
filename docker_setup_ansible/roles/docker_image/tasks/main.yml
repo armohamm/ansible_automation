@@ -1,0 +1,29 @@
+---
+
+- name: Creates directory
+  file: path=/data state=directory
+  notify: restart docker
+
+- name: registry container
+  docker:
+    name: registry
+    image: registry
+    detach: true
+    restart_policy: always
+    state: reloaded
+    # pull: always
+    volumes:
+    - "/data:/var/lib/registry"
+    ports:
+    - "5000:5000"
+
+- service:
+    name: docker
+    state: restarted
+
+- name: Pull microsoft/dotnet image and push it to a private repo
+  docker_image:
+    name: microsoft/dotnet:latest
+    repository: jenkins-server:5000/dotnet:latest
+    tag: jenkins-server:5000/dotnet:latest
+    push: yes
