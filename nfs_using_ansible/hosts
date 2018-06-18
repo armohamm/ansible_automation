@@ -1,0 +1,28 @@
+[server]
+nfs-server ansible_ssh_host=13.229.250.187
+
+[clients]
+nfs-client1 ansible_ssh_host=52.221.179.90
+nfs-client2 ansible_ssh_host=52.221.246.201
+
+[all_group]
+nfs-server
+nfs-client1
+nfs-client2
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_user=ubuntu
+ansible_private_key_file=<path_to_.pem_file>
+
+
+############# LIST ############
+#### All Host ####
+# set hostname
+
+#### Server Node #####
+# Install nfs-server
+# make server work
+
+##### Worker Nodes #####
+# Install nfs-common

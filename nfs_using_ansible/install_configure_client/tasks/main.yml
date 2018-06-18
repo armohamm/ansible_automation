@@ -1,0 +1,30 @@
+---
+- name:    Installing prerequisites & nfs
+  apt:     name={{item}} update_cache=yes state=present
+  with_items:
+   - apt-transport-https
+   - curl
+   - software-properties-common
+   - nfs-common
+
+
+- name: Creates directory
+  file:
+    path: /nfs
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0775
+
+- name: rpcinfo, modprobe, portmap
+  shell: |
+    sudo sudo mount -t nfs -v {{hostvars[groups['server'][0]]['ansible_eth0']['ipv4']['address']}}:/var/nfs /nfs
+
+- name: set mountpoints
+  lineinfile:
+    dest: /etc/fstab
+    state: present
+    line: '{{hostvars[item].ansible_default_ipv4.address}}:/var/nfs /nfs nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0'
+  with_items: "{{groups.server}}"
+  tags:
+    - mount

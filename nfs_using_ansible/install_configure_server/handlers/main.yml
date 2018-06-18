@@ -1,0 +1,5 @@
+---
+# Handler for NFS notifications
+
+- name: restart nfs-server
+  service: name=nfs-kernel-server state=restarted

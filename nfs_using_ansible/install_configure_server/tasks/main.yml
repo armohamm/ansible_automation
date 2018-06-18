@@ -1,0 +1,39 @@
+---
+- name: Installing prerequisites & nfs
+  apt: name={{item}} update_cache=yes state=present
+  with_items:
+   - apt-transport-https
+   - curl
+   - software-properties-common
+   - nfs-kernel-server
+
+- name: Creates directory
+  file:
+    path: /var/nfs
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0775
+
+
+- name: Update /etc/exports from inventory
+  lineinfile:
+    dest: /etc/exports
+    state: present
+    line: '/var/nfs {{hostvars[item].ansible_default_ipv4.address}}(rw,sync,no_subtree_check)'
+  with_items: "{{groups.clients}}"
+  tags:
+    - exports
+
+- name: rpcinfo, modprobe, portmap
+  shell: |
+    sudo rpcinfo -p {{hostvars[groups['clients'][0]]['ansible_eth0']['ipv4']['address']}}
+    sudo rpcinfo -p {{hostvars[groups['clients'][1]]['ansible_eth0']['ipv4']['address']}}
+    rpcinfo -p | grep nfs
+    modprobe nfsd
+  notify: restart nfs-server
+
+- name: execute exportfs
+  shell: |
+    sudo exportfs -ra
+  notify: restart nfs-server

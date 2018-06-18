@@ -1,0 +1,26 @@
+---
+- name: Setting up the Hostname
+  hosts:
+    - all_group
+  user: ubuntu
+  sudo: yes
+  roles:
+    - set_hostname
+
+
+- name: Installing & Configuring NFS in master server
+  hosts:
+    - server
+  user: ubuntu
+  sudo: yes
+  roles:
+    - install_configure_server
+
+
+- name: Installing & Configuring NFS-common in Client servers
+  hosts:
+    - clients
+  user: ubuntu
+  sudo: yes
+  roles:
+    - install_configure_client
